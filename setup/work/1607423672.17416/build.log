@@ -1,0 +1,55 @@
+cpanm (App::cpanminus) 1.7040 on perl 5.026001 built for x86_64-linux-gnu-thread-multi
+Work directory is /home/pronoor/gitprep/setup/work/1607423672.17416
+You have make /usr/bin/make
+You have LWP 6.43
+You have /bin/tar: tar (GNU tar) 1.29
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by John Gilmore and Jay Fenlason.
+You have /usr/bin/unzip
+--> Working on .
+Entering /home/pronoor/gitprep
+Configuring /home/pronoor/gitprep
+-> OK
+Checking if you have DBI == 1.634 ... Yes (1.634)
+Checking if you have DBIx::Custom == 0.40 ... Yes (0.40)
+Checking if you have DBIx::Connector == 0.56 ... Yes (0.56)
+Checking if you have Object::Simple == 3.14 ... Yes (3.14)
+Checking if you have Time::Moment == 0.38 ... Yes (0.38)
+Checking if you have Mojolicious::Plugin::AutoRoute == 0.19 ... Yes (0.19)
+Checking if you have Mojolicious::Plugin::INIConfig == 0.03 ... Yes (0.03)
+Checking if you have Mojolicious::Plugin::BasicAuth == 0.08 ... Yes (0.08)
+Checking if you have DBD::SQLite == 1.50 ... Yes (1.50)
+Checking if you have Config::Tiny == 2.23 ... Yes (2.23)
+Checking if you have Mojolicious::Plugin::DBViewer == 0.28 ... Yes (0.28)
+Checking if you have Text::Markdown::Hoedown == 1.01 ... No
+Checking if you have Data::Page::Navigation == 0.06 ... Yes (0.06)
+Checking if you have Mojolicious == 6.57 ... Yes (6.57)
+Checking if you have Validator::Custom == 1.01 ... Yes (1.01)
+Checking if you have Time::HiRes == 1.9732 ... Yes (1.9732)
+Checking if you have Data::Page == 2.02 ... Yes (2.02)
+==> Found dependencies: Text::Markdown::Hoedown
+Searching Text::Markdown::Hoedown (== 1.01) on cpanmetadb ...
+--> Working on Text::Markdown::Hoedown
+Fetching http://backpan.perl.org/authors/id/T/TO/TOKUHIROM/Text-Markdown-Hoedown-1.01.tar.gz
+-> OK
+Unpacking Text-Markdown-Hoedown-1.01.tar.gz
+Entering Text-Markdown-Hoedown-1.01
+Checking configure dependencies from META.json
+Checking if you have CPAN::Meta::Prereqs 0 ... Yes (2.150010)
+Checking if you have Module::Build 0.38 ... Yes (0.4229)
+Checking if you have ExtUtils::ParseXS 3.22 ... Yes (3.35)
+Checking if you have ExtUtils::Install 1.46 ... Yes (2.06)
+Checking if you have CPAN::Meta 0 ... Yes (2.150010)
+Checking if you have File::pushd 0 ... Yes (1.016)
+Configuring Text-Markdown-Hoedown-1.01
+Running Build.PL
+Can't locate builder/MyBuilder.pm in @INC (you may need to install the builder::MyBuilder module) (@INC contains: /home/pronoor/gitprep/extlib/lib/perl5/x86_64-linux-gnu-thread-multi /home/pronoor/gitprep/extlib/lib/perl5 /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.26.1 /usr/local/share/perl/5.26.1 /usr/lib/x86_64-linux-gnu/perl5/5.26 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.26 /usr/share/perl/5.26 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base) at Build.PL line 12.
+BEGIN failed--compilation aborted at Build.PL line 12.
+-> N/A
+-> FAIL Configure failed for Text-Markdown-Hoedown-1.01. See /home/pronoor/gitprep/setup/work/1607423672.17416/build.log for details.
+-> FAIL Installing the dependencies failed: Module 'Text::Markdown::Hoedown' is not installed
+-> FAIL Bailing out the installation for ..

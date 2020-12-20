@@ -1,0 +1,14 @@
+cpanm (App::cpanminus) 1.7040 on perl 5.026001 built for x86_64-linux-gnu-thread-multi
+Work directory is /home/pronoor/gitprep/setup/work/1607424232.17668
+You have make /usr/bin/make
+You have LWP 6.43
+You have /bin/tar: tar (GNU tar) 1.29
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by John Gilmore and Jay Fenlason.
+You have /usr/bin/unzip
+Searching Module::CoreList () on cpanmetadb ...
+Module::CoreList is up to date. (5.20201120)

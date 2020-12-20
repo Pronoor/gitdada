@@ -1,0 +1,594 @@
+=head2 Tue Aug  4 07:26:24 2020: C<Module> L<Module::CoreList|Module::CoreList>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 5.20200717>
+
+=item *
+
+C<EXE_FILES: corelist>
+
+=back
+
+=head2 Tue Aug  4 07:27:25 2020: C<Module> L<ExtUtils::MakeMaker|ExtUtils::MakeMaker>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 7.46>
+
+=item *
+
+C<EXE_FILES: bin/instmodsh>
+
+=back
+
+=head2 Tue Aug  4 07:27:29 2020: C<Module> L<File::pushd|File::pushd>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.016>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:38 2020: C<Module> L<ExtUtils::ParseXS|ExtUtils::ParseXS>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.35>
+
+=item *
+
+C<EXE_FILES: lib/ExtUtils/xsubpp>
+
+=back
+
+=head2 Tue Aug  4 07:27:47 2020: C<Module> L<Class::Accessor|Class::Accessor>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.51>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:52 2020: C<Module> L<Sub::Uplevel|Sub::Uplevel>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.2800>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:53 2020: C<Module> L<Test::Exception|Test::Exception>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.43>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:55 2020: C<Module> L<Data::Page::Navigation|Data::Page::Navigation>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:58 2020: C<Module> L<Object::Simple|Object::Simple>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.14>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:27:59 2020: C<Module> L<Validator::Custom|Validator::Custom>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:28:43 2020: C<Module> L<Mojolicious|Mojolicious>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.57>
+
+=item *
+
+C<EXE_FILES: script/hypnotoad script/mojo script/morbo>
+
+=back
+
+=head2 Tue Aug  4 07:28:44 2020: C<Module> L<Mojolicious::Plugin::AutoRoute|Mojolicious::Plugin::AutoRoute>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.19>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:28:51 2020: C<Module> L<Test::Warnings|Test::Warnings>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.030>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:28:56 2020: C<Module> L<Sub::Identify|Sub::Identify>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.14>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:30:15 2020: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.634>
+
+=item *
+
+C<EXE_FILES: dbilogstrip dbiprof dbiproxy>
+
+=back
+
+=head2 Tue Aug  4 07:31:20 2020: C<Module> L<DBD::SQLite|DBD::SQLite>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.50>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:27 2020: C<Module> L<DBIx::Custom|DBIx::Custom>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.40>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:31 2020: C<Module> L<Config::Tiny|Config::Tiny>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.23>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:32 2020: C<Module> L<Mojolicious::Plugin::INIConfig|Mojolicious::Plugin::INIConfig>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.03>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:36 2020: C<Module> L<Test::Requires|Test::Requires>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.11>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:41 2020: C<Module> L<Try::Tiny|Try::Tiny>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.30>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:42 2020: C<Module> L<Test::Fatal|Test::Fatal>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.014>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:44 2020: C<Module> L<Test::Number::Delta|Test::Number::Delta>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:51 2020: C<Module> L<Time::Moment|Time::Moment>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.38>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:57 2020: C<Module> L<Mojolicious::Plugin::DBViewer|Mojolicious::Plugin::DBViewer>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.28>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Aug  4 07:31:58 2020: C<Module> L<Mojolicious::Plugin::BasicAuth|Mojolicious::Plugin::BasicAuth>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.08>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Fri Aug 14 08:47:56 2020: C<Module> L<ExtUtils::MakeMaker|ExtUtils::MakeMaker>
+
+=over 4
+
+=item *
+
+C<installed into: /Volumes/Data/Hustle/Upwork/Gitdada/gitprep/extlib/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 7.46>
+
+=item *
+
+C<EXE_FILES: bin/instmodsh>
+
+=back
+
