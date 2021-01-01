@@ -31,7 +31,10 @@
       $validation->add_failed(id => 'User id is too long.');
     }
     else {
-      my $row = app->dbi->model('user')->select(where => {id => $id})->one;
+      #my $row = app->dbi->model('user')->select(where => {id => $id})->one;
+      my $row =  app->dbi->execute("select id from user where id like :id",
+          {id => $id})->value;
+      use Data::Dumper; print  "---------",Dumper $row;
       if ($row) {
         $validation->add_failed(id => "User id $id already exists");
       }
@@ -139,8 +142,20 @@
       }
     }
     else { 
-      # $errors = $validation->messages; 
-      $errors = "Error! Please ensure you are submitting the correct fields";
+      #my $errors1 = $validation->messages;
+      my $error_arr = $validation->{'_failed_infos'};
+      my $message;
+      if ($error_arr) {
+        for (keys %$error_arr) {
+          next if (!$_);
+          my $msg_ref = $error_arr->{$_};
+          my $msg = $msg_ref->{'message'};
+          $message .= "$msg\n" if ($msg);
+        }
+      }
+      chomp $message;
+      $errors = $message;
+      #$errors = "Error! Please ensure you are submitting the correct fields";
     }
   }
 %>

@@ -4,7 +4,7 @@ package Gitprep;
 use Encode ();
 # Fix CGI PATH_INFO encoding bug
 eval { $ENV{PATH_INFO} = Encode::decode('UTF-8', $ENV{PATH_INFO}) };
-
+$ENV{MOJO_MAX_MESSAGE_SIZE} = 1024000000;
 use Mojo::Base 'Mojolicious';
 
 use Carp 'croak';
