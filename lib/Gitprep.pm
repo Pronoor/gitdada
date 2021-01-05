@@ -383,6 +383,15 @@ sub startup {
           $c->redirect_to('/');
         });
 
+        #forgot password confirm email
+        $r->get('/_forgot_pwd' => sub {
+          my $c = shift;
+          my $jwt = $c->param('jwt');
+          my $url = $c->url_for("/reset_pwd");
+          $c->redirect_to($url->query(jwt => $jwt));
+        });
+
+
         # Return a json of users
         $r->get('/getUsers' => sub {
           my $self = shift;
