@@ -134,11 +134,12 @@
 
         my $jwt = Mojo::JWT->new(claims => $email, secret => 's3cr3t')->encode;
         my $url = url_for('/confirm')->to_abs->query(jwt => $jwt);
+        $url =~ s/localhost:10020/gitdada.com/;
         my $body = "Hello!\n Please follow the url below to verify your email address.\n $url \n If you did not create an account, no further action is required\n";
         my $verification_email = Email::Simple->create(
           header => [
             To      => $email,
-            From    => '"Support" <gitdada@gomailex.com>',
+            From    => '"Gitdada Support" <gitdada@gomailex.com>',
             Subject => "Verify Email Address",
           ],          
           body => $body,

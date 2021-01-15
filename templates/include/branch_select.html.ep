@@ -98,10 +98,12 @@
     
     
     // Repository URL buttons
-    var http_rep_url = '<%= url_for("$user/$project.git")->to_abs %>';
+    var http_url = '<%= url_for("$user/$project.git")->to_abs %>';
+    var http_rep_url = http_url.replace("localhost:10020", "gitdada.com");
     
     var logined = <%= $logined ? 'true' : 'false' %>;
-    var ssh_rep_url = '<%= $ssh_rep_url %>';
+    var ssh_url = '<%= $ssh_rep_url %>';
+    var ssh_rep_url = ssh_url.replace("localhost", "gitdada.com:");
     
     // Click HTTP button
     $('#btn_http').on('click', function () {

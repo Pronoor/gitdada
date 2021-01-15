@@ -57,11 +57,12 @@
 
       my $jwt = Mojo::JWT->new(claims => $email, secret => 'pwds3cr3t')->encode;
       my $url = url_for('/_forgot_pwd')->to_abs->query(jwt => $jwt);
+      $url =~ s/localhost:10020/gitdada.com/;
       my $body = "Hello!\n Please click on below link to reset password\n $url \n";
       my $verification_email = Email::Simple->create(
         header => [
           To      => $email,
-          From    => '"Support" <gitdada@gomailex.com>',
+          From    => '"Gitdada Support" <gitdada@gomailex.com>',
           Subject => "Gitdada Reset Password",
         ],          
         body => $body,
