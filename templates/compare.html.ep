@@ -16,11 +16,28 @@
   # Base project
   my $base_project = app->dbi->model('project')->select(
     [
-      {__MY__ => '*'},
-      {user => ['id']}
+      '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user.id"'
     ],
     where => {'project.id' => $base_project_id, 'user.id' => $base_user_id}
   )->one;
+  
+  # my $base_project = app->dbi->model('project')->select(
+  #   [
+  #     {__MY__ => '*'},
+  #     {user => ['id']}
+  #   ],
+  #   where => {'project.id' => $base_project_id, 'user.id' => $base_user_id}
+  # )->one;
   
   # Get target user, project, branch
   my $target_user_id;

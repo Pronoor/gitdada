@@ -152,12 +152,22 @@
   }
   
   my $keys = app->dbi->model('ssh_public_key')->select(
-    {
-      __MY__ => '*'
-    },
+    [
+      '"ssh_public_key"."row_id" as "row_id"',
+      '"ssh_public_key"."key" as "key"',
+      '"ssh_public_key"."user" as "user"',
+      '"ssh_public_key"."title" as "title"'
+    ],
     where => {'user.id' => $user_id},
     append => 'order by title'
   )->all;
+  # my $keys = app->dbi->model('ssh_public_key')->select(
+  #   {
+  #     __MY__ => '*'
+  #   },
+  #   where => {'user.id' => $user_id},
+  #   append => 'order by title'
+  # )->all;
 %>
 
 % layout 'common', title => 'SSH keys';

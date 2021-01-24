@@ -31,7 +31,6 @@
   # Repository description
   my $desc = $git->description(app->rep_info($user_id, $project_id));
   my $website_url = app->dbi->model('project')->select('website_url', where => {row_id => $project_row_id})->value;
-  
   # Check exsitence
   my $commits_number;
   if ($git->exists_branch(app->rep_info($user_id, $project_id))) {
@@ -72,14 +71,13 @@
     ? app->config->{basic}{'ssh_rep_url_base'} : $rep_home;
   my $ssh_rep_url = "ssh://$execute_user\@" . $url->host
     . ($ssh_port ? ":$ssh_port" : '') . "$ssh_rep_url_base/$user_id/$project_id.git";
-
+  $ssh_rep_url =~ s/localhost/gitdada.com/;
   my $branches = stash('branches');
   my $branches_count = app->git->branches_count($self->app->rep_info($user_id, $project_id));
   my $default_branch_name = app->manager->default_branch($user_id, $project_id);
   my $tags_count = app->git->tags_count(app->rep_info($user_id, $project_id));
   
   my $logined = $api->logined;
-  
   layout 'common', title => "$user_id/$project_id";
 %>
   
@@ -140,7 +138,6 @@
         % my $display = defined $dir && length $dir ? 'tree' : 'tree_top';
         %= include '/include/branch_select', display => $display, Path => $dir, ssh_rep_url => $ssh_rep_url;
       </div>
-      
       <div style="margin-bottom:30px">
         %= include '/include/tree', dir => $dir;
       </div>
@@ -148,7 +145,6 @@
       %= include '/include/readme', dir => $dir;
       
     % } elsif ($state eq 'init' && $api->logined($user_id)) {
-      
       <h4 class="topic1">SSH</h4>
       
       <div class="text-center" style="margin-bottom:10px">
@@ -174,6 +170,7 @@ git push -u origin master</pre>
       <hr>
 
       % my $http_rep_url = url_for("$user_id/$project_id.git")->to_abs;
+      % $http_rep_url =~ s/localhost:10020/gitdada.com/ ;
       <h4 class="topic1"><%= uc url_for->to_abs->scheme %></h4>
 
       <div class="text-center" style="margin-bottom:10px">
@@ -201,5 +198,4 @@ git push -u origin master</pre>
       </div>
     % }
   </div>
-  
   %= include '/include/footer';

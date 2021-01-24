@@ -372,7 +372,7 @@ sub member_projects {
     where => {
       original_project => $project_row_id,
     },
-    append => 'order by user.id, project.id'
+    append => 'order by "user".id, project.id'
   )->all;
 
   return $member_projects;
@@ -474,14 +474,31 @@ sub original_project {
   # Original project
   my $original_project = $dbi->model('project')->select(
     [
-      {__MY__ => '*'},
-      {user => ['id']}
+      '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user.id"'
     ],
     where => {
       'project.row_id' => $original_project_row_id
     }
   )->one;
-  
+  # my $original_project = $dbi->model('project')->select(
+  #   [
+  #     {__MY__ => '*'},
+  #     {user => ['id']}
+  #   ],
+  #   where => {
+  #     'project.row_id' => $original_project_row_id
+  #   }
+  # )->one;
   return unless defined $original_project;
   
   return $original_project;
@@ -496,14 +513,33 @@ sub child_project {
   
   my $child_project = $self->app->dbi->model('project')->select(
     [
-      {__MY__ => '*'},
-      {user => ['id']}
+     '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user.id"'
     ],
     where => {
       'project.original_project' => $project_row_id,
       'user.id' => $child_user_id
     }
   )->one;
+  # my $child_project = $self->app->dbi->model('project')->select(
+  #   [
+  #     {__MY__ => '*'},
+  #     {user => ['id']}
+  #   ],
+  #   where => {
+  #     'project.original_project' => $project_row_id,
+  #     'user.id' => $child_user_id
+  #   }
+  # )->one;
   
   return $child_project;
 }

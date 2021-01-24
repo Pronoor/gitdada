@@ -55,7 +55,7 @@
     else {
       #my $row = app->dbi->model('user')->select(where => {id => $id})->one;
       #make it case insenstive
-      my $row =  app->dbi->execute("select id from user where id like :id",
+      my $row =  app->dbi->execute("select id from \"user\" where id like :id",
           {id => $id})->value;
       if ($row) {
         $validation->add_failed(id => "User id $id already exists");
@@ -75,7 +75,7 @@
     }
     else {
       #my $row = app->dbi->model('user')->select(where => {email => $email})->one;
-      my $row =  app->dbi->execute("select email from user where email like :email",
+      my $row =  app->dbi->execute("select email from \"user\" where email like :email",
           {email => $email})->value;
       if ($row) {
         $validation->add_failed(email => "Mail $email already exists");
