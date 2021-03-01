@@ -55,7 +55,7 @@
     else {
       #my $row = app->dbi->model('user')->select(where => {id => $id})->one;
       #make it case insenstive
-      my $row =  app->dbi->execute("select id from \"user\" where id like :id",
+      my $row =  app->dbi->execute("select id from user where id like :id",
           {id => $id})->value;
       if ($row) {
         $validation->add_failed(id => "User id $id already exists");
@@ -75,7 +75,7 @@
     }
     else {
       #my $row = app->dbi->model('user')->select(where => {email => $email})->one;
-      my $row =  app->dbi->execute("select email from \"user\" where email like :email",
+      my $row =  app->dbi->execute("select email from user where email like :email",
           {email => $email})->value;
       if ($row) {
         $validation->add_failed(email => "Mail $email already exists");
@@ -134,12 +134,11 @@
 
         my $jwt = Mojo::JWT->new(claims => $email, secret => 's3cr3t')->encode;
         my $url = url_for('/confirm')->to_abs->query(jwt => $jwt);
-        $url =~ s/localhost:10020/gitdada.com/;
         my $body = "Hello!\n Please follow the url below to verify your email address.\n $url \n If you did not create an account, no further action is required\n";
         my $verification_email = Email::Simple->create(
           header => [
             To      => $email,
-            From    => '"Gitdada Support" <gitdada@gomailex.com>',
+            From    => '"Support" <gitdada@gomailex.com>',
             Subject => "Verify Email Address",
           ],          
           body => $body,
@@ -235,8 +234,8 @@
         </div><!-- media-body -->
         <div class="sign-wrapper mg-lg-l-50 mg-xl-l-60">
           <div class="wd-100p">
-            <h4 class="tx-color-01 mg-b-5">Create New Account</h4>
-            <p class="tx-color-03 tx-16 mg-b-40">It's free to signup and only takes a minute.</p>
+            <h4 class="tx-color-01 mg-b-5">Reset Password</h4>
+            <p class="tx-color-03 tx-16 mg-b-40">Enter username, You will recieve email to reset password</p>
              <p style="color: red">
                 <% if($errors){ %>
                 <%= $errors %>
@@ -252,43 +251,11 @@
                 <label>Username</label>
                 <input type="text" name="id" id="id" class="form-control" placeholder="Enter username" required>
               </div>
-              <div class="form-group" id="usrerr">
-                <p style="color: red"> Username already taken </p>
-              </div>
-              <div class="form-group">
-                <label>First Name</label>
-                <input type="text" name="firstname" class="form-control" placeholder="Enter firstname">
-              </div>
-              <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" name="lastname" class="form-control" placeholder="Enter lastname">
-              </div>
-              <div class="form-group">
-                <label>Email address</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
-              </div>
-               <div class="form-group" id="emailerr">
-                <p style="color: red"> Email already taken </p>
-              </div>
-              <div class="form-group">
-                <div class="d-flex justify-content-between mg-b-5">
-                  <label class="mg-b-0-f">Password</label>
-                </div>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
-              </div>
-              <div class="form-group tx-12">
-                Your password must be at least 8 characters including a number and a lowercase letter. <a href="#">Learn more</a>.
-              </div>
-              <div class="form-group tx-12">
-                By clicking <strong>Sign Up</strong> below, you agree to our terms of service and privacy statement.
-              </div><!-- form-group -->
-
-              <button type="submit" id="sbmt" class="btn btn-brand-02 btn-block">Sign Up</button>
+              
+              <button type="submit" id="sbmt" class="btn btn-brand-02 btn-block">Reset Password</button>
             </form>
             <div class="divider-text">or</div>
-            <button class="btn btn-outline-facebook btn-block">Sign Up With Facebook</button>
-            <button class="btn btn-outline-twitter btn-block">Sign Up With Twitter</button>
-            <div class="tx-13 mg-t-20 tx-center">Already have an account? <a href="<%= url_for('/') %>">Sign In</a></div>
+            <div class="tx-13 mg-t-20 tx-center"> <a href="<%= url_for('/') %>">Sign In</a></div>
           </div>
         </div><!-- sign-wrapper -->
       </div><!-- media -->

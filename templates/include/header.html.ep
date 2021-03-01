@@ -19,6 +19,11 @@
     $is_private_project = app->manager->is_private_project($user_id, $project_id);
   }
 %>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <div class="header">
   <div class="container">
@@ -34,17 +39,35 @@
       <div class="header-rigth-container">
         % if ($api->logined) {
           % unless ($session_user->{id} eq 'admin') {
-            <div class="header-btn-container">
+          <div class="header-btn-container">
               <a class="btn" href="<%= url_for("/_new") %>">Create a new repo</a>
-            </div>
-            <div class="header-btn-container">
+          </div>
+          <div class="header-btn-container">   
               <a class="btn" href="<%= url_for("/$session_user->{id}/_settings") %>">Account Settings</a>
-            </div>
+          </div>
+          <!-- <div class="dropdown">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+              Dropdown button
+            </button>
+            <div class="dropdown-menu">
+              <a class="btn" href="<%= url_for("/$session_user->{id}/_settings") %>">Account Settings</a> -->
+          <!-- <div class="dropdown header-btn-container">
+              <button class="dropbtn">Action</button>
+              <div class="dropdown-content">
+                <a class="btn" href="<%= url_for("/$session_user->{id}/_settings") %>">Account Settings</a>
+                <a class="btn" href="<%= url_for("/$session_user->{id}/_settings") %>">Account </a> -->
+            <!-- <div class="header-btn-container">   
+              <a class="btn" href="<%= url_for("/$session_user->{id}/_settings") %>">Account Settings</a>
+            </div> -->
           % }
           % my $url = url_with->to_abs;
+           <!-- <a href="<%= url_for("/_logout?from=$url") %>">Logout</a>
+                          </div>
+          </div> -->
           <div class="header-btn-container">
             <a class="btn" href="<%= url_for("/_logout?from=$url") %>">Logout</a>
-          </div>
+          </div> 
+
 	  % if ($api->logined_admin) {
 	  <div class="header-login-container">
 		<a href="<%= url_for("/_admin/reset-password") %>">Reset Password</a>
@@ -56,7 +79,7 @@
             % if ($api->logined_admin) {
               <a href="<%= url_for("/_admin") %>"><%= $session_user->{id} %></a>
             % } else {
-              <a href="<%= url_for("/$session_user->{id}") %>"><%= $session_user->{id} %></a>
+                <a href="<%= url_for("/$session_user->{id}") %>"><%= $session_user->{id} %></a>
             % }
           </div>
         % } else {

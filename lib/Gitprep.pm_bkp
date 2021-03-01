@@ -184,28 +184,23 @@ sub startup {
   $self->git($git);
   
   # DBI
-  # my $db_file = "$data_dir/gitprep.db";
-  # my $dbi = DBIx::Custom->connect(
-  #   dsn => "dbi:SQLite:database=$db_file",
-  #   option => {sqlite_unicode => 1, sqlite_use_immediate_transaction => 1}
-  # );
+  my $db_file = "$data_dir/gitprep.db";
   my $dbi = DBIx::Custom->connect(
-    dsn => "dbi:Pg:database=gitdada;host=148.59.34.110",
-    user => 'pronoor',
-    password => 'pronoor231',
-    connector => 1
+    dsn => "dbi:SQLite:database=$db_file",
+    connector => 1,
+    option => {sqlite_unicode => 1, sqlite_use_immediate_transaction => 1}
   );
   $self->dbi($dbi);
   
   # Database file permision
-  # if (my $user_id = $self->config->{hypnotoad}{user}) {
-  #   my $uid = (getpwnam $user_id)[2];
-  #   chown $uid, -1, $db_file;
-  # }
-  # if (my $group = $self->config->{hypnotoad}{group}) {
-  #   my $gid = (getgrnam $group)[2];
-  #   chown -1, $gid, $db_file;
-  # }
+  if (my $user_id = $self->config->{hypnotoad}{user}) {
+    my $uid = (getpwnam $user_id)[2];
+    chown $uid, -1, $db_file;
+  }
+  if (my $group = $self->config->{hypnotoad}{group}) {
+    my $gid = (getgrnam $group)[2];
+    chown -1, $gid, $db_file;
+  }
   
   # Model
   my $models = [
@@ -217,21 +212,21 @@ sub startup {
       table => 'ssh_public_key',
       primary_key => 'row_id',
       join => [
-        'left join "user" on ssh_public_key."user" = "user".row_id'
+        'left join user on ssh_public_key.user = user.row_id'
       ]
     },
     {
       table => 'project',
       primary_key => 'row_id',
       join => [
-        'left join "user" on project."user" = "user".row_id'
+        'left join user on project.user = user.row_id'
       ]
     },
     {
       table => 'collaboration',
       primary_key => 'row_id',
       join => [
-        'left join "user" on collaboration."user" = "user".row_id',
+        'left join user on collaboration.user = user.row_id',
         'left join project on collaboration.project = project.row_id',
       ]
     },
@@ -239,15 +234,15 @@ sub startup {
       table => 'issue',
       join => [
         'left join project on issue.project = project.row_id',
-        'left join "user" as project__user on project."user" = project__user.row_id',
+        'left join user as project__user on project.user = project__user.row_id',
         'left join pull_request on issue.pull_request = pull_request.row_id',
-        'left join "user" as open_user on issue.open_user = open_user.row_id',
+        'left join user as open_user on issue.open_user = open_user.row_id',
         'left join project as pull_request__base_project on pull_request.base_project = pull_request__base_project.row_id',
-        'left join "user" as pull_request__base_project__user'
-          . ' on pull_request__base_project."user" = pull_request__base_project__user.row_id',
+        'left join user as pull_request__base_project__user'
+          . ' on pull_request__base_project.user = pull_request__base_project__user.row_id',
         'left join project as pull_request__target_project on pull_request.target_project = pull_request__target_project.row_id',
-        'left join "user" as pull_request__target_project__user'
-          . ' on pull_request__target_project."user" = pull_request__target_project__user.row_id'
+        'left join user as pull_request__target_project__user'
+          . ' on pull_request__target_project.user = pull_request__target_project__user.row_id'
 
       ]
     },
@@ -255,7 +250,7 @@ sub startup {
       table => 'issue_message',
       primary_key => 'row_id',
       join => [
-        'left join "user" on issue_message."user" = "user".row_id',
+        'left join user on issue_message.user = user.row_id',
         'left join issue on issue_message.issue = issue.row_id'
       ]
     },
@@ -263,13 +258,13 @@ sub startup {
       table => 'pull_request',
       primary_key => 'row_id',
       join => [
-        'left join "user" as open_user on pull_request.open_user = open_user.row_id',
+        'left join user as open_user on pull_request.open_user = open_user.row_id',
         'left join project as base_project on pull_request.base_project = base_project.row_id',
-        'left join "user" as base_project__user'
-          . ' on base_project."user" = base_project__user.row_id',
+        'left join user as base_project__user'
+          . ' on base_project.user = base_project__user.row_id',
         'left join project as target_project on pull_request.target_project = target_project.row_id',
-        'left join "user" as pull_request__target_project__user'
-          . ' on target_project."user" = target_project__user.row_id'
+        'left join user as pull_request__target_project__user'
+          . ' on target_project.user = target_project__user.row_id'
       ]
     },
     {
@@ -277,7 +272,7 @@ sub startup {
       primary_key => 'row_id',
       join => [
         'left join project on label.project = project.row_id',
-        'left join "user" as project__user on project."user" = project__user.row_id'
+        'left join user as project__user on project.user = project__user.row_id'
       ]
     },
     {
@@ -333,24 +328,15 @@ sub startup {
 
     # DBViewer(only development)
     # /dbviewer
-    # if ($self->mode eq 'development') {
-    #   eval {
-    #     $self->plugin(
-    #       'DBViewer',
-    #       dsn => "dbi:SQLite:database=$db_file"
-    #     );
-    #   };
-    # }
     if ($self->mode eq 'development') {
       eval {
         $self->plugin(
           'DBViewer',
-           dsn => "dbi:Pg:database=gitdada;host=148.59.34.110",
-            user => 'pronoor',
-            password => 'pronoor231',
+          dsn => "dbi:SQLite:database=$db_file"
         );
       };
     }
+    
     # Auto route
     {
       my $r = $r->under(sub {

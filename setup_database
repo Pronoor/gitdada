@@ -43,8 +43,10 @@ else {
     my $sql = <<"EOS";
 create table user (
   row_id integer primary key autoincrement,
-  id not null unique default '',
-  email not null unique default ''
+  id not null default '',
+  email not null default '',
+  UNIQUE (id COLLATE NOCASE),
+  UNIQUE (email COLLATE NOCASE)
 );
 EOS
     $dbi->execute($sql);

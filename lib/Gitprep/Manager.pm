@@ -10,6 +10,7 @@ use Encode 'encode';
 use File::Copy qw/move copy/;
 use File::Path qw/mkpath rmtree/;
 use File::Temp ();
+use File::Spec::Functions;
 use Fcntl ':flock';
 use Carp 'croak';
 use File::Copy qw/copy move/;
@@ -371,7 +372,7 @@ sub member_projects {
     where => {
       original_project => $project_row_id,
     },
-    append => 'order by user.id, project.id'
+    append => 'order by "user".id, project.id'
   )->all;
 
   return $member_projects;
@@ -385,6 +386,9 @@ sub create_project {
     $params->{private} = 1;
   }
   
+  if ($opts->{'proj_type'}) {
+    $params->{'proj_type'} = 1; 
+  }
   # Create project
   my $dbi = $self->app->dbi;
   my $error;
@@ -470,14 +474,31 @@ sub original_project {
   # Original project
   my $original_project = $dbi->model('project')->select(
     [
-      {__MY__ => '*'},
-      {user => ['id']}
+      '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user.id"'
     ],
     where => {
       'project.row_id' => $original_project_row_id
     }
   )->one;
-  
+  # my $original_project = $dbi->model('project')->select(
+  #   [
+  #     {__MY__ => '*'},
+  #     {user => ['id']}
+  #   ],
+  #   where => {
+  #     'project.row_id' => $original_project_row_id
+  #   }
+  # )->one;
   return unless defined $original_project;
   
   return $original_project;
@@ -492,14 +513,33 @@ sub child_project {
   
   my $child_project = $self->app->dbi->model('project')->select(
     [
-      {__MY__ => '*'},
-      {user => ['id']}
+     '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user.id"'
     ],
     where => {
       'project.original_project' => $project_row_id,
       'user.id' => $child_user_id
     }
   )->one;
+  # my $child_project = $self->app->dbi->model('project')->select(
+  #   [
+  #     {__MY__ => '*'},
+  #     {user => ['id']}
+  #   ],
+  #   where => {
+  #     'project.original_project' => $project_row_id,
+  #     'user.id' => $child_user_id
+  #   }
+  # )->one;
   
   return $child_project;
 }
@@ -703,7 +743,6 @@ sub _create_rep {
   
   my $rep_info = $self->app->rep_info($user, $project);
   my $rep_git_dir = $rep_info->{git_dir};
-  
   mkdir $rep_git_dir
     or croak "Can't create directory $rep_git_dir: $!";
   
@@ -745,6 +784,215 @@ sub _create_rep {
       close $fh;
     }
     
+    # add post-recieve hook if its web projects
+    if ($opts->{'proj_type'}) {
+      #create a post-recieve hooks
+      # Create working directory
+      my $home_tmp_dir = $self->app->home->rel_file('tmp');
+      
+      #checkout the branch
+      my $udir = catdir($home_tmp_dir, $user);
+      if (!-d $udir) {
+        mkdir $udir or croak("Unable to create tmp dir $udir - $!");
+      }
+      my $tmp_rep_dir = catdir($udir, $project);
+      if (-d $tmp_rep_dir) {
+        rmtree ($tmp_rep_dir) or croak("Unable to delete dir $tmp_rep_dir - $!");
+      }
+      mkdir $tmp_rep_dir or croak("Unable to create tmp dir $udir - $!");
+
+      #--git-dir = $rep_git_dir , --work-tree = $tmp_rep_dir
+      #create post-recieve hooks
+
+      #content
+      my $tproj_dir = "/home/pronoor/gitdada/$project";
+      my $usr = "pronoor";
+      my $paswd = "pronoor231";
+      my $trg_host = "148.59.34.110";
+
+      my $content = <<"HERE";
+#!/bin/bash
+proj=$project
+tproj_dir=$tproj_dir
+usr=$usr
+paswd=$paswd
+trg_host=$trg_host
+tmp_rep_dir=$tmp_rep_dir
+rep_git_dir=$rep_git_dir
+
+while read oldrev newrev ref
+do
+    if [[ \$ref =~ .*/master\$ ]];
+    then
+        echo "Master ref received.  Deploying master branch to production..."
+
+        if [ ! -d "\$tmp_rep_dir" ]; then
+          mkdir -p $tmp_rep_dir
+        fi
+        git --work-tree=\$tmp_rep_dir --git-dir=\$rep_git_dir checkout -f
+        status=\$?
+        if [ \$status -eq 1 ]; then
+      echo "Something went wrong. Exiting...";
+      exit 1
+    fi
+    
+    #mkdir proj on taret
+    #ssh \$usr\@\$trg_host "mkdir -p $tproj_dir"
+    #stt0=\$?
+    #if [ \$stt0 -eq 1 ]; then
+    #    echo "Unable to create project dir - $tproj_dir. Exiting.."
+    #    exit
+    #fi
+    #Coping repo to target
+    echo "Coping repo to target"
+    scp -r \$tmp_rep_dir \$usr\@\$trg_host:\$tproj_dir
+    st0=\$?
+    if [ \$st0 -eq 1 ]; then
+        echo "Error whie coping repo to target. Exiting.."
+        exit
+    fi
+
+    #moving repo to /var/www/html
+    echo "moving repo to /var/www/html"
+    ssh \$usr\@\$trg_host "echo \$paswd | sudo -S cp -r \$tproj_dir /var/www/html"
+    st01=\$?
+    if [ \$st01 -eq 1 ]; then
+      ssh \$usr\@\$trg_host "rm -rf \$tproj_dir"
+        echo "Error while copy repo to public dir. Exiting.."
+        exit 1
+    fi
+
+
+    #Restarting server
+    echo "Restarting server"
+    ssh \$usr\@\$trg_host "echo \$paswd| sudo -S sudo service apache2 restart"
+    st5=\$?
+    if [ \$st5 -eq 1 ]; then
+      echo "Unable to restart server. Exiting..."
+      exit 1
+    fi
+
+    #mkdir proj on taret
+    ssh \$usr\@\$trg_host "rm -rf $tproj_dir"
+    echo "Deployed Successfully"
+  else
+    echo "Ref \$ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
+  fi
+done
+HERE
+      my $post_recieve_file = catfile($rep_git_dir, "hooks", "post-receive");
+      open (my $FL, ">", $post_recieve_file) or croak ("Unable to open file $post_recieve_file - $!");
+      print $FL $content;
+      close $FL;
+
+      if (-z $post_recieve_file) {
+        croak ("Unable to create post-receive hooks");
+      }
+      
+      #change the permission
+      `chmod +x $post_recieve_file`;
+      my $status = $?;
+      if ($status >> 8 != 0) {
+        croak("Change permission failed. $!");
+      }
+      #Create index.html page
+      # Temp directory
+      my $temp_dir =  File::Temp->newdir(DIR => $home_tmp_dir);
+      
+      # Working repository
+      my $work_rep_work_tree = "$temp_dir/work";
+      my $work_rep_git_dir = "$work_rep_work_tree/.git";
+      my $work_rep_info = {
+        work_tree => $work_rep_work_tree,
+        git_dir => $work_rep_git_dir
+      };
+      
+      mkdir $work_rep_work_tree
+        or croak "Can't create directory $work_rep_work_tree: $!";
+      
+      # Git init
+      my @git_init_cmd = $git->cmd($work_rep_info, 'init', '-q');
+      Gitprep::Util::run_command(@git_init_cmd)
+        or croak "Can't execute git init: @git_init_cmd";
+      
+      # Add README
+      my $index_html = <<"INDEX";
+<html>
+  <title> $project </title>
+  <h2> Your site is up! Enjoy the new experience</h2>
+  <p> You can access your site </p>  <a href="http://pro1.gitdada.com/$project">here</a>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br>
+  <footer>
+    <p>Powered by MedNoor Product</p>
+  </footer> 
+</html>
+INDEX
+      my $file = "$work_rep_work_tree/index.html";
+      open my $IFL, '>', $file
+        or croak "Can't create $file: $!";
+      print $IFL $index_html;
+      close $index_html;
+      
+      my @git_add_cmd = $git->cmd(
+        $work_rep_info,
+        'add',
+        'index.html'
+      );
+      
+      Gitprep::Util::run_command(@git_add_cmd)
+        or croak "Can't execute git add: @git_add_cmd";
+      
+      # Set user name
+      my @git_config_user_name = $git->cmd(
+        $work_rep_info,
+        'config',
+        'user.name',
+        $user
+      );
+      Gitprep::Util::run_command(@git_config_user_name)
+        or croak "Can't execute git config: @git_config_user_name";
+      
+      # Set user email
+      my $user_email = $self->app->dbi->model('user')->select('email', where => {id => $user})->value;
+      my @git_config_user_email = $git->cmd(
+        $work_rep_info,
+        'config',
+        'user.email',
+        "$user_email"
+      );
+      Gitprep::Util::run_command(@git_config_user_email)
+        or croak "Can't execute git config: @git_config_user_email";
+      
+      # Commit
+      my @git_commit_cmd = $git->cmd(
+        $work_rep_info,
+        'commit',
+        '-q',
+        '-m',
+        'first commit'
+      );
+      Gitprep::Util::run_command(@git_commit_cmd)
+        or croak "Can't execute git commit: @git_commit_cmd";
+      
+      # Push
+      {
+        my @git_push_cmd = $git->cmd(
+          $work_rep_info,
+          'push',
+          '-q',
+          $rep_git_dir,
+          'master'
+        );
+        # (This is bad, but --quiet option can't supress in old git)
+        Gitprep::Util::run_command(@git_push_cmd)
+          or croak "Can't execute git push: @git_push_cmd";
+      }
+
+      #remove temp dir
+      rmtree ($tmp_rep_dir) or croak ("Unable to remove tmp dir- $!") if (-d $tmp_rep_dir);
+    }
     # Add README and commit
     if ($opts->{readme}) {
       # Create working directory
@@ -765,10 +1013,12 @@ sub _create_rep {
         or croak "Can't create directory $work_rep_work_tree: $!";
       
       # Git init
-      my @git_init_cmd = $git->cmd($work_rep_info, 'init', '-q');
-      Gitprep::Util::run_command(@git_init_cmd)
-        or croak "Can't execute git init: @git_init_cmd";
-      
+      my $git_init_rep = catdir($work_rep_info, '.git');
+      if (!-d $git_init_rep) {
+        my @git_init_cmd = $git->cmd($work_rep_info, 'init', '-q');
+        Gitprep::Util::run_command(@git_init_cmd)
+          or croak "Can't execute git init: @git_init_cmd";
+      }
       # Add README
       my $file = "$work_rep_work_tree/README.md";
       open my $readme_fh, '>', $file

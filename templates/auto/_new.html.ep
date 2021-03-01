@@ -20,6 +20,7 @@
       my $description = param('description');
       my $readme = param('readme');
       my $private = param('private');
+      my $ptype = param('ptype');
       
       # Validator
       my $vc = app->vc;
@@ -53,6 +54,7 @@
       # "private"
       $private = $private ? 1 : 0;
       
+      $ptype = $ptype ? 1 : 0;
       # Git
       if ($validation->is_valid) {
         # Not logined
@@ -66,7 +68,7 @@
           $manager->create_project(
             $session_user->{id},
             $project_id,
-            {description => $description, readme => $readme, private => $private}
+            {description => $description, readme => $readme, private => $private, proj_type => $ptype}
           );
         };
         
@@ -147,7 +149,12 @@
           </div>
         </li>
       </ul>
-      
+      <div class="form-group">
+        <div class="d-flex justify-content-between mg-b-5">
+          <b>Project Type</b>
+        </div>
+            <label class="checkbox-inline"><input type="checkbox" name="ptype" value="1">Web</label>
+      </div><br>
       <div class="new-readme">
         <div>
           <%= check_box readme => 1 %><span>Initialize this repository with a README<span>
