@@ -19,6 +19,17 @@
     where => {'user.id' => $user_id, 'project.id' => $project_id}
   )->value;
   
+  #fetch all email and username
+  my $res =  app->dbi->model('user')->select(['id']);
+  my $all_ids = $res->all;
+  my @id_ar;
+  if ($all_ids) {
+    for (@$all_ids) {
+      next if (!$_);
+      push @id_ar, $_->{'id'};
+    }
+  }
+  my $unames = join (',', @id_ar);
   # Rename project
   my $git = app->git;
   my $errors;
@@ -54,25 +65,17 @@
             $validation->add_failed(collaborator => "Collaborator $collaborator_id already exists");
           }
         }
-      }
+      } 
       
       if ($validation->is_valid) {
         
         my $collaborator_row_id = $api->get_user_row_id($collaborator_id);
         
-        # Insert
-        eval {
-          app->dbi->model('collaboration')->insert(
-            {
-              project => $project_row_id,
-              user => $collaborator_row_id
-            }
-          );
-        };
         # Code to verify email address
-        # eval {
+        # eval {  
           use strict;
           use warnings;
+          use Mojo::JWT;
 
           use Email::Sender::Simple qw(sendmail);
           use Email::Sender::Transport::SMTP ();
@@ -91,6 +94,10 @@
               debug => 1,
             }
           );
+          my $jwt = Mojo::JWT->new(claims => { rproject => $project_row_id, ruser => $collaborator_row_id, own => $user_id},
+           secret => 'SeCreT#git#dada')->encode;
+          my $url = url_for('/response')->to_abs->query(jwt => $jwt);
+          $url =~ s/localhost:10020/gitdada.com/;
 
           my $collaborator_details = app->dbi->model('user')->select(
             where => {id => $collaborator_id}
@@ -100,19 +107,41 @@
           my $verification_email = Email::Simple->create(
             header => [
               To      => $collaborator_email,
-              From    => '"Support" <gitdada@gomailex.com>',
-              Subject => "GitDada Collaboration",
+              From    => '"Gitdada Support" <gitdada@gomailex.com>',
+              Subject => "GitDada Collaboration Request",
             ],          
-            body => "You have been added as a collaborator to a $project_id repository",
+            body => "You have been added as a collaborator to a $project_id repository. Please follow link for action - $url",
           );
           $verification_email->header_set( 'X-Content-Container' => 'bottle/glass' );
-  
           # print $email->as_string;
           try {
             sendmail($verification_email, {transport => $transport});
           } catch {
               die "Error sending email: $_";
           };
+          # #get email
+          # my $collaborator_details = app->dbi->model('user')->select(
+          #   where => {id => $collaborator_id}
+          # )->one;
+          # my $collaborator_email = $collaborator_details->{email};
+
+          # use Data::Dumper; die "----$collaborator_email  ", Dumper $collaborator_details;
+          # my $verification_email = Email::Simple->create(
+          #   header => [ 
+          #     To      => $collaborator_email,
+          #     From    => '"Gitdada Support" <gitdada@gomailex.com>',
+          #     Subject => "GitDada Collaboration Added",
+          #   ],          
+          #   body => "You have been added as a collaborator to $project_id repository. Please follow link for action - $url "
+          # );
+          # $verification_email->header_set( 'X-Content-Container' => 'bottle/glass' );
+  
+          # print $email->as_string;
+          # try {
+          #   sendmail($verification_email, {transport => $transport});
+          # } catch {
+          #     die "Error sending email: $_";
+          # };
           # sendmail($verification_email);
         # };
         if (my $e = $@) {
@@ -158,48 +187,23 @@
   my $collaborators = app->dbi->model('collaboration')->select(
     {user => ['id']},
     where => {project => $project_row_id},
-    append => 'order by collaboration.user'
+    append => 'order by collaboration."user"'
   )->all;
 %>
 
+%= javascript '/js/icon-input.js';
+
+%= javascript begin
+    $(document).ready(function(){
+      var ids = "<%= $unames %>";
+      var arr = ids.split(",");
+      arr.forEach(function(id) {
+        $('#userlist').append(`<option value="${id}">`);
+      });
+    }); 
+% end
+
 % layout 'common', title => 'Collaboration';
-<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
-<script type="text/javascript">
-// Return users to be added as collaborators
-  $(document).ready(function () {    
-    // Constructing the suggestion engine
-    var cars = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: {
-          url:'/getUsers',
-        },
-    });
-
-    // console.log(cars);
-
-    // Initializing the typeahead
-    $('.typeahead').typeahead({
-        hint: true,
-        highlight: true, /* Enable substring highlighting */
-        minLength: 1 /* Specify minimum characters required for showing result */
-    },
-    {
-        name: 'cars',
-        source: cars,
-        display: function(item) {        // display: 'name' will also work
-            return item.id;
-        },
-        limit: 5,
-        templates: {
-            suggestion: function(item) {
-                return '<div>'+ item.id +'</div>';
-            }
-        }
-    });
-  });
-  </script>
   
   %= include '/include/header';
   
@@ -234,7 +238,10 @@
             % }
             <form action="<%= url_for->query(op => 'add') %>" method="post">
               <div>
-                  <input type="text" name="collaborator" class="typeahead tt-query" autocomplete="off" style="width: 100%">
+                  <!-- <input type="text" name="collaborator"  id="collaborator" class="typeahead tt-query" autocomplete="off" style="width: 100%"> -->
+                  <input type="text" name="collaborator"  id="collaborator" class="typeahead tt-query" list="userlist" style="width: 100%">
+                  <datalist id="userlist">
+                  </datalist>
               </div>
               <div>
                   <button type="submit" class="btn" style="margin-top: 50px">Add</button>

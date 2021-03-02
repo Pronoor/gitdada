@@ -102,12 +102,16 @@
         else {
           return false;
         }
-      });
+      }); 
+
+      $('#users').DataTable();
+
     });
   % end
 
   %= include '/include/header';
-
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+  <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
   <div class="container">
 
     % if (my $message = flash('message')) {
@@ -129,21 +133,24 @@
     <h3 class="topic1">Admin Users</h3>
     <div style="margin-bottom:10px"><a class="btn" href="<%= url_for('/_admin/user/create') %>">Create User</a></div>
     <div class="container">
-      <table class="admin-users">
+      <table id="users" class="admin-users">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
 	        <th>Space Used/Max</th>
           <th>Mail</th>
 	        <th>Status</th>
-          <th></th>
+          <th>Action</th>
         </tr>
+        </thead>
+        <tbody>
         % for my $user (@$users) {
           <tr>
             % my $uid = $user->{id};
             % my $current_status = $user->{status};
             <td>
-              <a href="#"><%= $uid %></a>
+              <a href="<%= url_for("/$uid") %>"><%= $uid %></a>
             </td>
             <td>
               <%= $user->{name} %>
@@ -171,19 +178,21 @@
                 %= hidden_field user => $uid;
                 <input type="hidden" name="current_status" value="<%= $current_status %>">
                 <input type="hidden" name="user" value="<%= $uid %>">
-                <input type="submit" class="btn btn-small" value="<%= $status[$user->{status}]  %>">
+                <input type="submit" class="btn" value="<%= $status[$user->{status}]  %>">
               </form>
             </td>
             <td>
-              <a class="btn btn-small" href="<%= url_for('/_admin/user/update')->query(id => $uid) %>">Settings</a>
-              <a class="btn btn-small" href="<%= url_for('/reset-password')->query(user => $uid) %>">Reset Password</a>
+              <a class="btn" href="<%= url_for('/_admin/user/update')->query(id => $uid) %>">Settings</a>
+              <a class="btn" href="<%= url_for('/reset-password')->query(user => $uid) %>">Reset Password</a>
               <form action="<%= url_for->query(op => 'delete') %>" method="post">
                 %= hidden_field user => $uid;
-                <input type="submit" class="btn btn-small delete-btn" style="color:red" user="<%= $uid %>" value="Delete">
+                <input type="submit" class="btn delete-btn" style="color:red" user="<%= $uid %>" value="Delete">
               </form>
             </td>
           </tr>
+          
         % }
+        </tbody>
       </table>
     </div>
   </div>
