@@ -484,7 +484,7 @@ sub original_project {
       '"project"."guess_encoding" as "guess_encoding"',
       '"project"."website_url" as "website_url"', 
       '"project"."proj_type" as "proj_type"',
-      '"user"."id" as "user.id"'
+      '"user"."id" as "user_id"'
     ],
     where => {
       'project.row_id' => $original_project_row_id
@@ -523,7 +523,7 @@ sub child_project {
       '"project"."guess_encoding" as "guess_encoding"',
       '"project"."website_url" as "website_url"', 
       '"project"."proj_type" as "proj_type"',
-      '"user"."id" as "user.id"'
+      '"user"."id" as "user_id"'
     ],
     where => {
       'project.original_project' => $project_row_id,
@@ -548,7 +548,6 @@ sub projects {
   my ($self, $user_id) = @_;
   
   my $user_row_id = $self->app->dbi->model('user')->select('row_id', where => {id => $user_id})->value;
-  
   # Projects
   my $projects = $self->app->dbi->model('project')->select(
     where => {user => $user_row_id},
@@ -556,6 +555,39 @@ sub projects {
   )->all;
   
   return $projects;
+}
+
+sub collb_projects {
+  my ($self, $user_id) = @_;
+  #collaborator projects
+  my $user_row_id = $self->app->dbi->model('user')->select('row_id', where => {id => $user_id})->value;
+  my $collb = $self->app->dbi->model('collaboration')->select('project', where => {user => $user_row_id})->all;
+  my @vals;
+  map {push @vals, $_->{'project'}} @$collb;
+
+  my $collab_projects = $self->app->dbi->model('project')->select(
+    [
+      '"project"."row_id" as "row_id"', 
+      '"project"."user" as "user"',
+      '"project"."id" as "id"', 
+      '"project"."default_branch" as "default_branch"',
+      '"project"."original_project" as "original_project"',
+      '"project"."private" as "private"',
+      '"project"."ignore_space_change" as "ignore_space_change"',
+      '"project"."guess_encoding" as "guess_encoding"',
+      '"project"."website_url" as "website_url"', 
+      '"project"."proj_type" as "proj_type"',
+      '"user"."id" as "user_id"'
+    ],
+    where => {'project.row_id' => \@vals},
+  )->all;
+  # Projects
+  # my $collab_projects = $self->app->dbi->model('project')->select(
+  #   where => {row_id => \@vals},
+  #   append => 'order by id'
+  # )->all;
+
+  return $collab_projects;
 }
 
 sub users {
@@ -1328,4 +1360,29 @@ sub _rename_rep {
     or croak "Can't move $rep_git_dir to $renamed_rep_git_dir: $!";
 }
 
+sub add_collaborator {
+  my ($self, $ruser, $rproject) = @_;
+  my $dbi = $self->app->dbi;
+
+  eval {
+      $dbi->model('collaboration')->insert(
+      {
+        project => $rproject,
+        user => $ruser
+      }
+    );
+  };
+  if ($@) {
+    croak "Failed to add collaborator ";
+  }
+  
+  my $rep = $dbi->model('project')->select(
+    'id',
+    where => {
+      'row_id' => $rproject,
+    }
+  )->value;
+
+  return $rep;
+}
 1;

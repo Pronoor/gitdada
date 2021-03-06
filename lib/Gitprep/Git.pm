@@ -1660,10 +1660,13 @@ sub _chop_str {
 
 sub decide_encoding {
   my ($self, $rep_info, $lines) = @_;
-  
+  my $user_id = $self->app->dbi->model('user')->select(
+    'row_id', where => {id => $rep_info->{user}}
+  )->value;
+
   my $guess_encoding_str = $self->app->dbi->model('project')->select(
     'guess_encoding',
-    where => {user_id => $rep_info->{user}, name => $rep_info->{project}}
+    where => {user => $user_id, id => $rep_info->{project}}
   )->value;
   
   my @guess_encodings;

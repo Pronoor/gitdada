@@ -384,7 +384,7 @@ sub startup {
 
           my $c = shift;
           my $jwt = $c->param('jwt');
-          my $email = decode_jwt(token=>$jwt, key => 's3cr3t');
+          my $email = decode_jwt(token=>$jwt, key => 'SeCreT#git#dada');
           my $error;
 
           my $dbi = $c->app->dbi;
@@ -405,6 +405,13 @@ sub startup {
           $c->redirect_to($url->query(jwt => $jwt));
         });
 
+        #forgot password confirm email
+        $r->get('/response' => sub {
+          my $c = shift;
+          my $jwt = $c->param('jwt');
+          my $url = $c->url_for("/_response");
+          $c->redirect_to($url->query(jwt => $jwt));
+        });
 
         # Return a json of users
         $r->get('/getUsers' => sub {

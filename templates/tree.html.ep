@@ -152,12 +152,13 @@
       </div>
       
       <pre class="command-line">
+git clone <%= $ssh_rep_url %>
 touch README
-git init
 git add README
 git commit -m "first commit"
-git remote add origin <%= $ssh_rep_url %>
-git push -u origin master</pre>
+If files size is more than 10M, run - git config --local http.postBuffer 157286400
+git push origin master
+</pre>
       
       <div class="text-center" style="margin-bottom:10px">
         <b>Push an existing repository from the command line via ssh</b>
@@ -165,7 +166,9 @@ git push -u origin master</pre>
       
       <pre class="command-line">
 git remote add origin <%= $ssh_rep_url %>
-git push -u origin master</pre>
+If files size is more than 10M, run - git config --local http.postBuffer 157286400
+git push origin master
+</pre>
 
       <hr>
 
@@ -178,12 +181,13 @@ git push -u origin master</pre>
       </div>
       
       <pre class="command-line">
+git clone <%= $http_rep_url %>
 touch README
-git init
 git add README
 git commit -m "first commit"
-git remote add origin <%= $http_rep_url %>
-git push -u origin master</pre>
+If files size is more than 10M, run - git config --local http.postBuffer 157286400
+git push origin master
+</pre>
       
       <div class="text-center" style="margin-bottom:10px">
         <b>Push an existing repository from the command line via <%= url_for->to_abs->scheme %></b>
@@ -191,7 +195,9 @@ git push -u origin master</pre>
       
       <pre class="command-line">
 git remote add origin <%= $http_rep_url %>
-git push -u origin master</pre>
+If files size is more than 10M, run - git config --local http.postBuffer 157286400
+git push origin master
+</pre>
     % } else {
       <div class="not-yet-created">
         <b>Repository is not yet created.</b>
